@@ -54,13 +54,13 @@ RUN cd ./.mujoco/mujoco200/ && pip3 install -U 'mujoco-py<2.1,>=2.0'
 RUN pip install opencv-python
 
 RUN pip3 install -U 'mujoco-py<2.1,>=2.0'
-
+#copy license file
 COPY ./mjpro150/ /root/.mujoco/mjpro150
 COPY ./mjkey.txt /root/.mujoco/
 
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mjpro150/bin"
-
 RUN apt install patchelf
+
 # Install gym
 RUN pip install gym[all]
 
@@ -83,6 +83,10 @@ RUN pip install -e .
 
 # Upload our actual code
 COPY . ./
+
+#solve error
+RUN pip install gym==0.9.5
+RUN apt install -y vim
 
 # Just in case any python cache files were carried over from the source directory, remove them
 RUN py3clean .
